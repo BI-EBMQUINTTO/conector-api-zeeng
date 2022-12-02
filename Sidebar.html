@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  </head>
+  <script>
+        function openTab(tabName) {
+              let i;
+              let x = document.getElementsByClassName("form");
+              for (i = 0; i < x.length; i++) {
+                    x[i].style.display = "none";  
+              }
+              document.getElementById(tabName).style.display = "block";  
+        }
+
+        // Funções para coletar os dados dos formulários, formatar a url de consulta
+      function getIdMarcas() {
+          google.script.run.updateIds()
+      }
+
+      function getMetricas() { 
+         let nomePlanilha = document.getElementById("NomePlanilha-1").value;
+         let dataInicial = document.getElementById("dataInicial-1").value;
+         let dataFinal =  document.getElementById("dataFinal-1").value;
+         let iDs = document.getElementById("idEmpresas-1").value;
+         
+         let baseUrl = "http://api.zeeng.com.br/indicadores/indicadoresEmpresa?chave=6ba108b1097b48238d414b9296cb05a3";
+         let idArray = iDs.split(",");
+  
+         let empresas = idArray.map(function(id){
+                       return "&empresas[]=" + id;      
+                 }).join('');
+  
+         let url = baseUrl + empresas + "&datainicial=" + dataInicial + "&datafinal=" + dataFinal + "&periodo=1";
+          
+         google.script.run.insertData(nomePlanilha, url); 
+       } 
+
+      function getPosts() { 
+         let nomePlanilha = document.getElementById("NomePlanilha-2").value;
+         let redeSocial = document.getElementById("RedeSocial").value;
+         let dataInicial = document.getElementById("dataInicial-2").value;
+         let dataFinal =  document.getElementById("dataFinal-2").value;
+         let iDs = document.getElementById("idEmpresas-2").value;
+         
+         let baseUrl = "http://api.zeeng.com.br/" + redeSocial + "/topposts?chave=6ba108b1097b48238d414b9296cb05a3";
+         let idArray = iDs.split(",");
+  
+         let empresas = idArray.map(function(id){
+                       return "&empresas[]=" + id;      
+                 }).join('');
+  
+         let url = baseUrl + "&datainicial=" + dataInicial + 
+                  "&datafinal=" + dataFinal  + 
+                  empresas + "&ordenarpor=MaisAntigo&quantidade=1000&offset=0&retornartags=true";
+          
+         google.script.run.insertData(nomePlanilha, url); 
+       } 
+
+      function getStories() { 
+         let nomePlanilha = document.getElementById("NomePlanilha-3").value;
+         let dataInicial = document.getElementById("dataInicial-3").value;
+         let dataFinal =  document.getElementById("dataFinal-3").value;
+         let iDs = document.getElementById("idEmpresas-3").value;
+         
+         let baseUrl = "http://api.zeeng.com.br/insights/storiesinstagram?chave=6ba108b1097b48238d414b9296cb05a3"
+  
+         
+         let url = baseUrl + "&IdPerfil=" + iDs + "&datainicial=" + dataInicial + "&datafinal=" + dataFinal + "&periodo=1";
+          
+         google.script.run.insertData(nomePlanilha, url); 
+       } 
+      
+      function getPrivatePosts() { 
+         let nomePlanilha = document.getElementById("NomePlanilha-4").value;
+         let redeSocial = document.getElementById("RedeSocial-2").value;
+         let dataInicial = document.getElementById("dataInicial-4").value;
+         let dataFinal =  document.getElementById("dataFinal-4").value;
+         let iD = document.getElementById("idEmpresas-4").value;
+         
+         let baseUrl = "http://api.zeeng.com.br/insights/indicadoresInsightsTopPost";
+         let apiKey = "?chave=6ba108b1097b48238d414b9296cb05a&"
+
+         let url = baseUrl + redeSocial + apiKey  + "&IdPerfil=" + iD + "&datainicial=" + dataInicial + "&datafinal=" + dataFinal;
+
+         google.script.run.insertData(nomePlanilha, url); 
+       } 
+      
+</script>
+  <style>
+      body {
+         margin: 0;
+     }
+      .form {
+          background-color: #15172b;
+          box-sizing: border-box;
+          display: block;
+          align-items: center;
+          padding: 20px;
+          height: 700px;
+          width: 320px;
+     }
+     
+     .title {
+          color: #eee;
+          font-family: sans-serif;
+          font-size: 28px;
+          font-weight: 600;
+          margin-top: 15px;
+     }
+     
+     .label {
+         color: #eee;
+         font-family: sans-serif;
+         font-size: 16px;
+         font-weight: 600;
+         margin-top: 10px;
+     }
+     
+     .input-container {
+         height: 50px;
+         position: relative;
+         width: 80%;
+     }
+
+     .ic1 {
+         margin-top: 40px;
+     }
+     
+     .input {
+         background-color: #303245;
+         border-radius: 12px;
+         border: 0;
+         box-sizing: border-box;
+         color: #eee;
+         font-size: 18px;
+         height: 100%;
+         outline: 0;
+         padding: 4px 20px 0;
+         width: 100%;
+     }
+     
+     .cut {
+        background-color: #15172b;
+        border-radius: 10px;
+        height: 20px;
+        left: 20px;
+        position: absolute;
+        top: -20px;
+        transform: translateY(0);
+        transition: transform 200ms;
+        width: 76px;
+    }
+    
+    .p_aviso {
+       font-size: 14px;
+       color: #FF0000;
+    }
+
+    .submit {
+        background-color: #08d;
+        border-radius: 12px;
+        border: 0;
+        box-sizing: border-box;
+        color: #eee;
+        cursor: pointer;
+        font-size: 18px;
+        height: 50px;
+        margin-top: 38px;
+       // outline: 0;
+        text-align: center;
+        width: 100%;
+    }
+
+     .submit:active {
+        background-color: #06b;
+    }
+    
+   </style>
+  <body>
+       <div class="w3-bar w3-black">
+            <button class="w3-bar-item w3-button" onclick="openTab('ids')">ID marcas</button>
+            <button class="w3-bar-item w3-button" onclick="openTab('metricas')">Métricas</button>
+            <button class="w3-bar-item w3-button" onclick="openTab('posts')">Posts</button>
+            <button class="w3-bar-item w3-button" onclick="openTab('stories')">Stories</button>
+            <button class="w3-bar-item w3-button" onclick="openTab('privatePosts')">Posts privados</button>
+       </div>
+       <form id="ids" class="form">
+           <div class="title">Coleta de dados da API ZEENG</div>
+           <div class="input-container ic1">
+                 <p class="label ic1 ">Buscar IdMarcas</p>
+                 <p class="p_aviso">Esses Ids são necessários para buscar os dados de posts públicos e métricas.</p>
+                 <input type = "button" class = "submit" value = "Pesquisar" onclick = "getIdMarcas();"> 
+            </div>
+       </form>
+       <form id="metricas" class="form">
+           <div class="title">Coleta de dados da API ZEENG</div>
+           <div class="input-container ic1">
+                 <label for="NomePlanilha" class="label ic1 ">Nome da planilha</label><br>
+                 <input type="text" id="NomePlanilha-1" name="NomePlanilha" class="input" placeholder="Marca 1">
+                  <div class="cut"></div>
+                 <label for="dataInicial" class="label ic1 ">Data Inicial</label><br>
+                 <input type="text" id="dataInicial-1" name="dataInicial" class="input" placeholder="yyyy-mm-dd">
+                  <div class="cut"></div>
+                 <label for="dataFinal" class="label">Data Final</label><br>
+                 <input type="text" id="dataFinal-1" name="dataFinal" class="input" placeholder="yyyy-mm-dd">
+                  <div class="cut"></div>
+                 <label for="idEmpresas" class="label ic1 ">ID das Empresas</label><br>
+                 <input type="text" id="idEmpresas-1" name="idEmpresas" class="input" placeholder="ID1,ID2,..."><br>
+                 <input type = "button" class = "submit" value = "Pesquisar" onclick = "getMetricas();"> 
+            </div>
+     </form>
+     <form id="posts" class="form" style="display:none">
+           <div class="title">Coleta de dados da API ZEENG</div>
+           <div class="input-container ic1">
+                 <label for="NomePlanilha" class="label ic1 ">Nome da planilha</label><br>
+                 <input type="text" id="NomePlanilha-2" name="NomePlanilha" class="input" placeholder="Marca 1">
+                  <div class="cut"></div>
+                 <label for="RedeSocial" class="label ic1 ">Rede Social</label><br>
+                 <input type="text" id="RedeSocial" name="RedeSocial" class="input" placeholder="facebook">
+                  <div class="cut"></div>
+                 <label for="dataInicial-2" class="label ic1 ">Data Inicial</label><br>
+                 <input type="text" id="dataInicial-2" name="dataInicial" class="input" placeholder="yyyy-mm-dd">
+                  <div class="cut"></div>
+                 <label for="dataFinal" class="label">Data Final</label><br>
+                 <input type="text" id="dataFinal-2" name="dataFinal" class="input" placeholder="yyyy-mm-dd">
+                  <div class="cut"></div>
+                 <label for="idEmpresas" class="label ic1 ">ID das Empresas</label><br>
+                 <input type="text" id="idEmpresas-2" name="idEmpresas" class="input" placeholder="ID1,ID2,..."><br>
+                 <input type = "button" class = "submit" value = "Pesquisar" onclick = "getPosts();"> 
+            </div>
+     </form>
+     <form id="stories" class="form" style="display:none">
+           <div class="title">Coleta de dados da API ZEENG</div>
+           <div class="input-container ic1">
+                 <label for="NomePlanilha" class="label ic1 ">Nome da planilha</label><br>
+                 <input type="text" id="NomePlanilha-3" name="NomePlanilha" class="input" placeholder="Marca 1">
+                  <div class="cut"></div>
+                 <label for="dataInicial" class="label ic1 ">Data Inicial</label><br>
+                 <input type="text" id="dataInicial-3" name="dataInicial" class="input" placeholder="yyyy-mm-dd">
+                  <div class="cut"></div>
+                 <label for="dataFinal" class="label">Data Final</label><br>
+                 <input type="text" id="dataFinal-3" name="dataFinal" class="input" placeholder="yyyy-mm-dd">
+                  <div class="cut"></div>
+                 <label for="idEmpresas" class="label ic1 ">ID Perfil ZEENG Insights</label><br>
+                 <input type="text" id="idEmpresas-3" name="idEmpresas" class="input" placeholder="ID1,ID2,..."><br>
+                 <input type = "button" class = "submit" value = "Pesquisar" onclick = "getStories();"> 
+            </div>
+     </form>
+     <form id="privatePosts" class="form" style="display:none">
+           <div class="title">Coleta de dados da API ZEENG</div>
+           <div class="input-container ic1">
+                 <label for="NomePlanilha" class="label ic1 ">Nome da planilha</label><br>
+                 <input type="text" id="NomePlanilha-4" name="NomePlanilha" class="input" placeholder="Marca 1">
+                  <div class="cut"></div>
+                 <label for="RedeSocial" class="label ic1 ">Rede Social</label><br>
+                 <input type="text" id="RedeSocial-2" name="RedeSocial" class="input" placeholder="Instagram">
+                  <div class="cut"></div>
+                 <label for="dataInicial-4" class="label ic1 ">Data Inicial</label><br>
+                 <input type="text" id="dataInicial-4" name="dataInicial" class="input" placeholder="yyyy-mm-dd">
+                  <div class="cut"></div>
+                 <label for="dataFinal-4" class="label">Data Final</label><br>
+                 <input type="text" id="dataFinal-4" name="dataFinal" class="input" placeholder="yyyy-mm-dd">
+                  <div class="cut"></div>
+                 <label for="idEmpresas" class="label ic1 ">ID Perfil ZEENG Insights</label><br>
+                 <input type="text" id="idEmpresas-4" name="idEmpresas" class="input" placeholder="ID1"><br>
+                 <input type = "button" class = "submit" value = "Pesquisar" onclick = "getPrivatePosts();"> 
+            </div>
+     </form>
+  </body>
+</html>
